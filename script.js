@@ -2,7 +2,7 @@
 var scores, roundScore, activePlayer,
 scores = [0, 0];
 roundScore = 0;
-activePlayer = 1;
+activePlayer = 0;
 
 document.getElementById('score--0').textContent = '0'
 document.getElementById('score--1').textContent = '0'
@@ -23,5 +23,54 @@ document.querySelector('.btn--roll').addEventListener('click', function() {
     diceDom.style.display = 'block';
     // since the .png files all end with a number we can just concenate the first and last part of the png file together with dice inbetween.
     diceDom.src = 'dice-' + dice + '.png';
+
+
     //Update round score IF if the rolled number is not a 1
+    if (dice !== 1) {
+        // add score to player
+        roundScore += dice;
+        // Adding the roundScore to the textContent
+        document.querySelector('#current--' + activePlayer).textContent = roundScore;
+    } else {
+       nextPlayer();
+    }
+
+    //If we roll 1 we want it to switch players and remove all points from the previous players current points.
+    
 })
+// Now we want to add functionality to the Hold dice button
+document.querySelector('.btn--hold').addEventListener('click', function() {
+    // We want to hold the current point value and transfer it to score--0 or score--1 whatever current side its on 
+    scores[activePlayer] += roundScore;
+
+
+    // Update the UI with the addittion of adding the current score to the global score using .textContent = 
+    document.querySelector('#score--' + activePlayer).textContent = scores[activePlayer];
+
+    // Switch the activePlayer when btn--hold is hit
+    nextPlayer();
+
+    // Check if the activePlayer won the game aka if global score = 100
+    if (scores[activePlayer] >= 100){
+        document.querySelector('#name--' + activePlayer).textContent += 'Wins0'; 
+    } else {
+        nextPlayer();
+    }
+
+})
+
+ function nextPlayer() {
+     // Switch to next player
+
+     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0
+
+     document.getElementById('current--0').textContent = '0'
+     document.getElementById('current--1').textContent = '0'
+
+     document.querySelector('.player--0').classList.toggle('player--active');
+     document.querySelector('.player--1').classList.toggle('player--active');
+     //document.querySelector('.player--0').classList.remove('player--active');
+     //document.querySelector('.player--1').classList.add('player--active');
+     // This is getting rid of the Dice.png 
+     document.querySelector('.dice' ).style.display = 'none'
+ }
