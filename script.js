@@ -42,27 +42,36 @@ document.querySelector('.btn--roll').addEventListener('click', function() {
 document.querySelector('.btn--hold').addEventListener('click', function() {
     // We want to hold the current point value and transfer it to score--0 or score--1 whatever current side its on 
     scores[activePlayer] += roundScore;
-
+    var oppositePlayer =  
 
     // Update the UI with the addittion of adding the current score to the global score using .textContent = 
     document.querySelector('#score--' + activePlayer).textContent = scores[activePlayer];
 
-    // Switch the activePlayer when btn--hold is hit
-    nextPlayer();
-
     // Check if the activePlayer won the game aka if global score = 100
-    if (scores[activePlayer] >= 100){
-        document.querySelector('#name--' + activePlayer).textContent += 'Wins0'; 
-    } else {
-        nextPlayer();
+    checkWin();
+
+});
+
+    function checkWin() {
+        if (scores[activePlayer] >= 10 ){
+            document.querySelector('#name--' + activePlayer).textContent = 'Winner'; 
+        } else {
+            nextPlayer();
+        }
     }
 
-})
+    /*// we now want to implement a new game function
+    document.getElementById('btn--new').addEventListener('click', function() {
+        // Now that we got the btn--new id and the click event we want to reset all of the winner scores and winner names back to normal
+        scores = 0;
 
+    })
+    */
+   
  function nextPlayer() {
      // Switch to next player
 
-     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0
+     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0; roundScore = 0;
 
      document.getElementById('current--0').textContent = '0'
      document.getElementById('current--1').textContent = '0'
